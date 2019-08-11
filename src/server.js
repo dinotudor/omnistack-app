@@ -11,17 +11,15 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
-io.on('connection', socket => {
-  console.log('New conection', socket.id)
+const connectedUsers = {};
 
-  socket.on('hello', message => {
-    console.log(message)
-  })
-  setTimeout(() => {
-    socket.emit('world', {
-      message: 'Omnistack',
-    })
-  }, 5000)
+io.on('connection', socket => {
+  const { user } = socket.handshake.query;
+
+  console.log(user, socket.id)
+
+  connectedUsers[user] = socket.id;
+
 });
 
 mongoose.connect('mongodb+srv://omnistack:omnistack@cluster0-bejzn.mongodb.net/omnistack?retryWrites=true&w=majority', {
