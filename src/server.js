@@ -26,6 +26,13 @@ mongoose.connect('mongodb+srv://omnistack:omnistack@cluster0-bejzn.mongodb.net/o
   useNewUrlParser: true
 });
 
+app.use((req, res, next) => {
+  req.io = io;
+  req.connectedUsers = connectedUsers
+
+  return next();
+});
+
 app.use(cors());
 app.use(express.json());
 app.use(routes);
