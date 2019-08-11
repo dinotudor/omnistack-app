@@ -13,7 +13,16 @@ const io = require('socket.io')(server);
 
 io.on('connection', socket => {
   console.log('New conection', socket.id)
-})
+
+  socket.on('hello', message => {
+    console.log(message)
+  })
+  setTimeout(() => {
+    socket.emit('world', {
+      message: 'Omnistack',
+    })
+  }, 5000)
+});
 
 mongoose.connect('mongodb+srv://omnistack:omnistack@cluster0-bejzn.mongodb.net/omnistack?retryWrites=true&w=majority', {
   useNewUrlParser: true
